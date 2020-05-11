@@ -31,7 +31,7 @@ INSTALLATION INSTUCTIONS
 
 
 TEST INSTRUCTIONS
-- $ notifyme -n "this is a test"
+- $ sleep 5; notifyme -n "5 seconds later triggers a notification to your Alexa devices"
 
 
 
