@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# NOTIFY ME FROM COMMAND WRAPPER USING RESTful API and CURL
+# ALEXA SKILL: https://www.amazon.com/Thomptronics-Notify-Me/dp/B07BB2FYFS
+# ALEXA SKILL WEBSITE: https://www.thomptronics.com/about/notify-me
+# 1.0
+# JELLO 5-10-20
+
+
+notification=""
+curlcommand=""
+dverbose=""
+accessCode=$(<~/.notifyme_key)
+apiURL=https://api.notifymyecho.com/v1/NotifyMe
+
+
+allinputs() {
+	echo "verbose----"
+	echo "notification: $notification"
+	echo "access: $accessCode"
+	echo "apiURL: $apiURL"
+	echo ""
+}
+
+info() {
+	echo "notifyme 1.0 an Alexa 'Notify Me' skill command wrapper using RESTful API and CURL."
+	echo "v1.0"
+	echo "Author: Jello"
+	echo "Relies on Alexa 'Notify Me' skillset: https://www.amazon.com/Thomptronics-Notify-Me/dp/B07BB2FYFS by Thomptronics."
+	echo "API information https://www.thomptronics.com/about/notify-me"
+	echo "Retrieve from Alexa with command: 'Alexa what is/are my notifications"
+	echo "Place notify me key string into ~/.notifyme_key file"
+	echo ""
+}
+
+usage() {
+	echo "usage: notifyme [[-i] [-v] [-h] [-d] | [-n notification]]"
+	echo "sends notification message to alexa devices associated with a user account."
+	echo "	-n --notification	Notification message to send to alexa user"
+	echo "	-i --info		Program Information"
+	echo "	-v --verbose            Verbose mode"
+	echo "	-d --debug		Additional debugging verbosity from curl command"
+	echo "	-h --help		Help"
+	echo ""
+}
+
+curlit() {
+	if [ "$notification" = "" ]; then
+		echo "Missing required parameter: -n [notification]"
+	exit 1
+	fi
+	curlcommand="curl $dverbose --header \"Content-Type: application/json\" --request POST --data '{\"notification\":\"$notification\",\"accessCode\":\"$accessCode\"}' $apiURL"
+	if [ "$dverbose" = "-v" ]; then
+		echo "curl: $curlcommand"
+		eval $curlcommand
+		echo ""
+	else
+		eval $curlcommand > /dev/null 2>&1;
+	fi
+}
+
+
+while [ "$1" != "" ]; do
+	case $1 in
+        -d | --debug )		dverbose="-v"
+                                ;;
+        -n | --notification )   shift
+				notification=$1
+                                curlit
+                                ;;		
+        -v | --verbose )        allinputs
+                                ;;		
+        -i | --info )           info
+                                exit
+                                ;;		
+	-h | --help )		usage
+				exit
+				;;
+	* )			usage
+				exit 1
+	esac
+	shift
+done

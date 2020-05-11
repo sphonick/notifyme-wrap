@@ -1,0 +1,37 @@
+README
+
+This is a super simple shell script wrapper to quickly trigger an Alexa 'notification' from the command line.
+
+Primary examples of its use:
+
+- To notify yourself (through alexa devices / phone app) upong chron job or other long job completion.
+- Receive notifications upong trigger events such as server going down or failure of website ping.
+
+
+
+AUTHOR
+Jon Ammerman
+
+
+
+CONTACT / WEB SITE
+
+Reach me via https://www.islandguardian.net
+
+
+
+INSTALLATION INSTUCTIONS
+
+- Copy the notifyme script to a suitable location /usr/bin 
+- Make executable (775)
+- Enable the 'Notify Me' skill for Alexa (by Tumptronics): https://www.amazon.com/Thomptronics-Notify-Me/dp/B07BB2FYFS  
+- Say "Alexa, open Notify Me" to recieve your access key via email
+- Copy your access key to your home directory and save as (.notifyme_key) file   ~/.notifyme_key
+
+
+
+TEST INSTRUCTIONS
+- $ notifyme -n "this is a test"
+
+
+
